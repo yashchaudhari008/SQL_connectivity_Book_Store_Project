@@ -552,7 +552,7 @@ isbnToAdd_entry.pack(side='left')
 addBookBtn = Button(adddeleteBookFrame, text="Add Book", command = lambda : insertTableRow("ShoppingBasket", [email.get(), isbnToAdd.get()]))
 addBookBtn.pack(side='left')
 
-deleteBookBtn = Button(adddeleteBookFrame, text="Delete Book", command = lambda : deleteTableRow("ShoppingBasket","book_isbn", [isbnToAdd.get()]))
+deleteBookBtn = Button(adddeleteBookFrame, text="Delete Book", command = lambda : deleteFromBasket(email.get(),isbnToAdd.get()))
 deleteBookBtn.pack(side='left')
 
 adddeleteBookFrame.pack(fill='x')

@@ -39,6 +39,14 @@ def parseData(data):
 
 # %%
 # SQL-Tkinter Functions
+def searchInTable(tablename, search_col, search_value):
+    cur.execute("SELECT COUNT(*) FROM {} WHERE {}={}".format(tablename, search_col, search_value))
+    return (cur.fetchall()[0][0] >= 1)
+
+def searchInTable2(tablename, search_col, search_value, search_col2, search_value2):
+    cur.execute("SELECT COUNT(*) FROM {} WHERE {}='{}' and {}='{}'".format(tablename, search_col, search_value, search_col2, search_value2))
+    return (cur.fetchall()[0][0] >= 1)
+
 def showTable(tablename):
     top = Toplevel()
     top.title(tablename+"s")
@@ -53,19 +61,28 @@ def showTable(tablename):
             e.grid(row=i+1, column=j)
 
 def deleteTableRow(tablename, col, value):
-    cur.execute("DELETE FROM {} WHERE {}={}".format(tablename,col,value))
-    commitToDB()
-    MessageBox.showwarning("Database Updated", "Entry Deleted in {}.".format(tablename))
+    if(searchInTable(tablename,col,value)):
+        cur.execute("DELETE FROM {} WHERE {}={}".format(tablename,col,value))
+        commitToDB()
+        MessageBox.showwarning("Database Updated", "Entry Deleted in {}.".format(tablename))
+    else:
+        MessageBox.showerror("Error", "No Entry Found in Table!")
 
 def updateTableRow(tablename, col, value, search_col, search_value):
-    cur.execute("UPDATE {} SET {}={} WHERE {}={}".format(tablename, col, value, search_col, search_value))
-    commitToDB()
-    MessageBox.showinfo("Database Updated", "{} updated.".format(tablename))
+    if(searchInTable(tablename,search_col,search_value)):
+        cur.execute("UPDATE {} SET {}={} WHERE {}={}".format(tablename, col, value, search_col, search_value))
+        commitToDB()
+        MessageBox.showinfo("Database Updated", "{} updated.".format(tablename))
+    else:
+        MessageBox.showerror("Error", "No Entry Found in Table!")
 
 def insertTableRow(tablename, data):
-    cur.execute("INSERT INTO {} VALUES ({})".format(tablename, parseData(data)))
-    commitToDB()
-    MessageBox.showwarning("Database Updated", "Entry Added in {}.".format(tablename))
+    try:
+        cur.execute("INSERT INTO {} VALUES ({})".format(tablename, parseData(data)))
+        commitToDB()
+        MessageBox.showwarning("Database Updated", "Entry Added in {}.".format(tablename))
+    except (mysql.Error) as e:
+        MessageBox.showerror("Error", e)
 
 
 # Users SQL-TKinter Fuctions
@@ -107,9 +124,12 @@ def showShoppingBasket(username):
     finalPriceLabel.grid()
 
 def deleteFromBasket(username, isbn):
-    cur.execute("DELETE FROM ShoppingBasket WHERE book_isbn='{}' and email='{}' LIMIT 1;".format(isbn,username))
-    commitToDB()
-    MessageBox.showwarning("Database Updated", "Entry Deleted in Shopping Basket.")
+    if(searchInTable2("ShoppingBasket","book_isbn",isbn, "email", username)):
+        cur.execute("DELETE FROM ShoppingBasket WHERE book_isbn='{}' and email='{}' LIMIT 1;".format(isbn,username))
+        commitToDB()
+        MessageBox.showwarning("Database Updated", "Entry Deleted in Shopping Basket.")
+    else:
+        MessageBox.showerror("Error", "No Entry Found in Table!")
 
 
 # %%

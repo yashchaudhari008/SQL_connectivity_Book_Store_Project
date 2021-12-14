@@ -1,6 +1,19 @@
 # SQL_Connectivity_[Book_Store_Project]
 Book Store Management using MySQL and Python [Tkinter](https://docs.python.org/3/library/tkinter.html).
 
+## How to download project
+
+#### Direct Download
+Locate green code button on [project page](https://github.com/yashchaudhari008/SQL_connectivity_Book_Store_Project.git), select Download ZIP. After downloading zip, extract it.
+![image](https://user-images.githubusercontent.com/92355658/145965144-b1431f35-5940-4ca8-a116-191783e6c046.png)
+
+#### Using git
+Enter following command into shell/cmd
+```sh
+git clone https://github.com/yashchaudhari008/SQL_connectivity_Book_Store_Project.git
+```
+
+
 ## How to Run Project
 
 ### Requirements:-

@@ -109,7 +109,7 @@ def checkoutBasket(username, price):
     if(searchInTable("ShoppingBasket","email",parseData([username]))):
         cur.execute("DELETE FROM ShoppingBasket WHERE email='{}'".format(username))
         commitToDB()
-        MessageBox.showinfo("Checkout Sucessfull", "Book Purchased, Total Cost: {}.".format(price))
+        MessageBox.showinfo("Checkout Sucessfull", "Book Purchased, Total Cost: {0:.2f}.".format(price))
     else:
         MessageBox.showerror("Error", "No Books To Checkout!")
 

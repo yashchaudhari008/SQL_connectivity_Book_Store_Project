@@ -136,7 +136,7 @@ def showShoppingBasket(username):
             if (j == len(student) -1 ):
                 finalPrice += float(student[j])
             e.grid(row=i+1, column=j)
-    finalPriceLabel = Label(top,text="Final Price : {} /-".format(finalPrice), fg='black', font=labelFont)
+    finalPriceLabel = Label(top,text="Final Price : {0:.2f} /-".format(finalPrice), fg='black', font=labelFont)
     finalPriceLabel.grid()
 
     checkoutBtn = Button(top,text='Checkout', command=lambda: checkoutBasket(username,finalPrice))

@@ -87,6 +87,9 @@ def insertTableRow(tablename, data):
 
 # Users SQL-TKinter Fuctions
 def showUserDetails(username):
+    if not(searchInTable("Customer","email",parseData([username]))):
+        MessageBox.showerror("Error","{} doesn't exist".format(username))
+        return 
     top = Toplevel()
     top.title("User Details : {}".format(username))
     cur.execute("SELECT name, phone, address FROM Customer WHERE email='{}'".format(username))
@@ -101,6 +104,9 @@ def showUserDetails(username):
         pass
 
 def showShoppingBasket(username):
+    if not(searchInTable("Customer","email",parseData([username]))):
+        MessageBox.showerror("Error","{} doesn't exist".format(username))
+        return 
     top = Toplevel()
     top.title("Shopping Basket : {}".format(username))
     cur.execute("""SELECT Book.ISBN, Book.title, price ,COUNT(book_isbn) as 'quantity', SUM(Book.price) as 'total_price'
@@ -124,6 +130,9 @@ def showShoppingBasket(username):
     finalPriceLabel.grid()
 
 def deleteFromBasket(username, isbn):
+    if not(searchInTable("Customer","email",parseData([username]))):
+        MessageBox.showerror("Error","{} doesn't exist".format(username))
+        return  
     if(searchInTable2("ShoppingBasket","book_isbn",isbn, "email", username)):
         cur.execute("DELETE FROM ShoppingBasket WHERE book_isbn='{}' and email='{}' LIMIT 1;".format(isbn,username))
         commitToDB()
@@ -131,6 +140,11 @@ def deleteFromBasket(username, isbn):
     else:
         MessageBox.showerror("Error", "No Entry Found in Table!")
 
+def addToBasket(username, isbn):
+    if not(searchInTable("Customer","email",parseData([username]))):
+        MessageBox.showerror("Error","{} doesn't exist".format(username))
+        return
+    insertTableRow("ShoppingBasket", [username, isbn])
 
 # %%
 root = Tk()
@@ -569,7 +583,7 @@ isbnToAdd_label.pack(side='left')
 isbnToAdd_entry = Entry(adddeleteBookFrame, textvariable=isbnToAdd)
 isbnToAdd_entry.pack(side='left')
 
-addBookBtn = Button(adddeleteBookFrame, text="Add Book", command = lambda : insertTableRow("ShoppingBasket", [email.get(), isbnToAdd.get()]))
+addBookBtn = Button(adddeleteBookFrame, text="Add Book", command = lambda : addToBasket(email.get(), isbnToAdd.get()))
 addBookBtn.pack(side='left')
 
 deleteBookBtn = Button(adddeleteBookFrame, text="Delete Book", command = lambda : deleteFromBasket(email.get(),isbnToAdd.get()))

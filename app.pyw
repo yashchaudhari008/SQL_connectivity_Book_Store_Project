@@ -85,6 +85,19 @@ def insertTableRow(tablename, data):
         MessageBox.showerror("Error", e)
 
 
+# Book SQL Functions
+def isBookAvailable(isbn):
+    cur.execute("SELECT stocks FROM Book WHERE isbn='{}'".format(isbn))
+    return (cur.fetchall()[0][0] >= 1)
+
+def updateBookQuantity(isbn, quantity=1):
+    cur.execute("""
+        UPDATE Book
+        SET stocks = stocks + {}
+        WHERE isbn={};
+        """.format(quantity,isbn))
+    commitToDB()
+
 # Users SQL-TKinter Fuctions
 def showUserDetails(username):
     if not(searchInTable("Customer","email",parseData([username]))):
@@ -150,6 +163,7 @@ def deleteFromBasket(username, isbn):
     if(searchInTable2("ShoppingBasket","book_isbn",isbn, "email", username)):
         cur.execute("DELETE FROM ShoppingBasket WHERE book_isbn='{}' and email='{}' LIMIT 1;".format(isbn,username))
         commitToDB()
+        updateBookQuantity(isbn)
         MessageBox.showwarning("Database Updated", "Entry Deleted in Shopping Basket.")
     else:
         MessageBox.showerror("Error", "No Entry Found in Table!")
@@ -161,7 +175,11 @@ def addToBasket(username, isbn):
     if not(searchInTable("Book","isbn",isbn)):
         MessageBox.showerror("Error","Incorrect ISBN number!")
         return
+    if not(isBookAvailable(isbn)):
+        MessageBox.showwarning("Out of Stock", "Opps! Book is out of stock.")
+        return
     insertTableRow("ShoppingBasket", [username, isbn])
+    updateBookQuantity(isbn, -1)
 
 # %%
 root = Tk()

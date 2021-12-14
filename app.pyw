@@ -158,6 +158,9 @@ def addToBasket(username, isbn):
     if not(searchInTable("Customer","email",parseData([username]))):
         MessageBox.showerror("Error","{} doesn't exist".format(username))
         return
+    if not(searchInTable("Book","isbn",isbn)):
+        MessageBox.showerror("Error","Incorrect ISBN number!")
+        return
     insertTableRow("ShoppingBasket", [username, isbn])
 
 # %%

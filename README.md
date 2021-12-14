@@ -18,12 +18,6 @@ Open `first_time_run.py` to make app ready for first use.
 ### Running GUI
 Open `app.pyw` to run the GUI App. 
 
-## For Developers
-
-Use `main.ipynb` (Jupyter Notebook File) for easy development.
-
-> Tip:- Suggested to use VSCode with Jupter Notebook extension.
-
 
 - - -
 Mini-Project for DBMSL

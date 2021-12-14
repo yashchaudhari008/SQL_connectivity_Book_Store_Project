@@ -100,8 +100,18 @@ def showUserDetails(username):
     for i, student in enumerate(cur.fetchall()):
         for j in range(len(student)):
             e = Label(top, text=str(student[j]), fg='black')
-            e.grid(row=j, column=i+1)
-        pass
+            e.grid(row=j, column=i+1)      
+
+def checkoutBasket(username, price):
+    if not(searchInTable("Customer","email",parseData([username]))):
+        MessageBox.showerror("Error","{} doesn't exist".format(username))
+        return 
+    if(searchInTable("ShoppingBasket","email",parseData([username]))):
+        cur.execute("DELETE FROM ShoppingBasket WHERE email='{}'".format(username))
+        commitToDB()
+        MessageBox.showinfo("Checkout Sucessfull", "Book Purchased, Total Cost: {}.".format(price))
+    else:
+        MessageBox.showerror("Error", "No Books To Checkout!")
 
 def showShoppingBasket(username):
     if not(searchInTable("Customer","email",parseData([username]))):
@@ -128,6 +138,9 @@ def showShoppingBasket(username):
             e.grid(row=i+1, column=j)
     finalPriceLabel = Label(top,text="Final Price : {} /-".format(finalPrice), fg='black', font=labelFont)
     finalPriceLabel.grid()
+
+    checkoutBtn = Button(top,text='Checkout', command=lambda: checkoutBasket(username,finalPrice))
+    checkoutBtn.grid(column=4)
 
 def deleteFromBasket(username, isbn):
     if not(searchInTable("Customer","email",parseData([username]))):

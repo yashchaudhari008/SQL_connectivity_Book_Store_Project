@@ -102,7 +102,8 @@ def showUserDetails(username):
             e = Label(top, text=str(student[j]), fg='black')
             e.grid(row=j, column=i+1)      
 
-def checkoutBasket(username, price):
+def checkoutBasket(top, username, price):
+    top.destroy()
     if not(searchInTable("Customer","email",parseData([username]))):
         MessageBox.showerror("Error","{} doesn't exist".format(username))
         return 
@@ -139,7 +140,7 @@ def showShoppingBasket(username):
     finalPriceLabel = Label(top,text="Final Price : {0:.2f} /-".format(finalPrice), fg='black', font=labelFont)
     finalPriceLabel.grid()
 
-    checkoutBtn = Button(top,text='Checkout', command=lambda: checkoutBasket(username,finalPrice))
+    checkoutBtn = Button(top,text='Checkout', command=lambda: checkoutBasket(top,username,finalPrice))
     checkoutBtn.grid(column=4)
 
 def deleteFromBasket(username, isbn):

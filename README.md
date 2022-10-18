@@ -1,5 +1,8 @@
 # SQL_Connectivity_[Book_Store_Project]
 Book Store Management using MySQL and Python [Tkinter](https://docs.python.org/3/library/tkinter.html).
+## Screenshots
+![WhatsApp Image 2022-10-18 at 3 52 42 PM](https://user-images.githubusercontent.com/92355658/196406614-589c3140-5822-4374-9972-6df11e969ba3.jpeg)
+![WhatsApp Image 2022-10-18 at 3 54 22 PM](https://user-images.githubusercontent.com/92355658/196406635-8ea44e2d-a301-4645-8e4d-0a0f5f84d3eb.jpeg)
 
 ## How to Run Project
 
